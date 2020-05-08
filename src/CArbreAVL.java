@@ -185,7 +185,21 @@ public class CArbreAVL {
         }
         return retour;
     }
-
+    public CNoeudAVL recherche_arbre(int nombre, int[] nbcoups){
+        CNoeudAVL noeud_trouve =null, NdCourant = this.racine();
+        while (NdCourant != null)
+        { if (NdCourant.valeur() == nombre)
+        {noeud_trouve = NdCourant;
+        NdCourant = null;
+        }
+            else if (nombre < NdCourant.valeur())
+                NdCourant = NdCourant.gauche();
+            else
+                NdCourant = NdCourant.droit();
+            nbcoups[0]++;
+        }
+        return noeud_trouve;
+    }
 }
 
 
