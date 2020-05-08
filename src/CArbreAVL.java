@@ -185,6 +185,8 @@ public class CArbreAVL {
         }
         return retour;
     }
+
+    // Recherche d'un noeud
     public CNoeudAVL recherche_arbre(int nombre, int[] nbcoups){
         CNoeudAVL noeud_trouve =null, NdCourant = this.racine();
         while (NdCourant != null)
@@ -199,6 +201,29 @@ public class CArbreAVL {
             nbcoups[0]++;
         }
         return noeud_trouve;
+    }
+
+    // Parcours par niveau en mode itératif
+    public void ParcoursParNiveau(CNoeudAVL NdCourant){
+        CFile File = new CFile();
+        File.enfiler(NdCourant);
+        while (File.file_vide())
+        { NdCourant = File.defiler();
+        System.out.printf("[%2d ",NdCourant.valeur());
+        System.out.printf("%+2d ",NdCourant.facteur_equilibre());
+        if (NdCourant.gauche() == null)
+            System.out.printf("(Gnull ");
+        else
+            System.out.printf("(G%d ",NdCourant.gauche().valeur());
+        if (NdCourant.droit() == null)
+            System.out.printf("Dnull)] ");
+        else
+            System.out.printf("D%d)] ", NdCourant.droit().valeur());
+        if (NdCourant.gauche() != null)
+            File.enfiler(NdCourant.gauche());
+        if (NdCourant.droit() != null)
+            File.enfiler(NdCourant.droit());
+        }
     }
 }
 
