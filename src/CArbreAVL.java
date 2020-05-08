@@ -126,6 +126,66 @@ public class CArbreAVL {
         }
         return retour;
     }
+
+    public int rotation_droite(CNoeudAVL s_arbre, CNoeudAVL pere) {
+        int retour = 0;
+        CNoeudAVL fils_droit, petit_fils;
+        rotation = true;
+        System.out.printf("--- Rotation à droite de %d\n", s_arbre.valeur());
+        fils_droit = s_arbre.droit();
+        if (fils_droit.facteur_equilibre() == VERS_DROITE) {
+            petit_fils = fils_droit.droit();
+            System.out.printf("---> D_DROITE fils (%d) ", fils_droit.valeur());
+            System.out.printf(" petit_fils (%d) \n", petit_fils.valeur());
+            //On affecte au pointeur droit de s_arbre, le pointeur gauche de fils_droit
+            s_arbre.change_droit(fils_droit.gauche());
+            // On affecte s_arbre au pointeur droit de fils_gauche
+            fils_droit.change_gauche(s_arbre);
+            // On fait pointer le père de s_arbre vers fils_droit
+            if (pere != null) {
+                if (pere.gauche() == s_arbre)
+                    pere.change_gauche(fils_droit);
+                else pere.change_droit(fils_droit);
+            } else //on a changé la racine
+                pt_racine = fils_droit;
+            // On met à jour les facteurs d'équilibre
+            fils_droit.change_facteur_equilibre(EQUILIBRE);
+            s_arbre.change_facteur_equilibre(EQUILIBRE);
+            retour = fils_droit.facteur_equilibre();
+        } else if (fils_droit.facteur_equilibre() == VERS_GAUCHE) {
+            petit_fils = fils_droit.gauche();
+            System.out.printf("--> D_GAUCHE fils (%d)", fils_droit.valeur());
+            System.out.printf(" petit_fils (%d) \n", petit_fils.valeur());
+            //Affectation au pointeur gauche de fils_droit le pointeur droit de petit_fils
+            fils_droit.change_gauche(petit_fils.droit());
+            // Affection au pointeur droit de s_arbre le pointeur gauche de petit_fils
+            s_arbre.change_droit(petit_fils.gauche());
+            //On affecte au pointeur gauche de petit_fils, s_arbre
+            petit_fils.change_gauche(s_arbre);
+            //On fait pointer le père de s_arbre sur petit_fils
+            if (pere != null) {
+                if (pere.gauche() == s_arbre)
+                    pere.change_gauche(petit_fils);
+                else pere.change_droit(petit_fils);
+            } else //On change de racine
+                pt_racine = petit_fils;
+            // Mise à jour des facteurs d'équilibre
+            if (petit_fils.facteur_equilibre() == VERS_DROITE) {
+                s_arbre.change_facteur_equilibre(VERS_GAUCHE);
+                fils_droit.change_facteur_equilibre(EQUILIBRE);
+            } else if (petit_fils.facteur_equilibre() == EQUILIBRE) {
+                s_arbre.change_facteur_equilibre(EQUILIBRE);
+                fils_droit.change_facteur_equilibre(EQUILIBRE);
+            } else if (petit_fils.facteur_equilibre() == VERS_GAUCHE) {
+                s_arbre.change_facteur_equilibre(EQUILIBRE);
+                fils_droit.change_facteur_equilibre(VERS_DROITE);
+            }
+            petit_fils.change_facteur_equilibre(EQUILIBRE);
+            retour = petit_fils.facteur_equilibre();
+        }
+        return retour;
+    }
+
 }
 
 
